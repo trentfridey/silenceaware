@@ -33,8 +33,9 @@ body {
     height: 32px;
   }
   .hamburger {
-    width: 20px;
-    height: 20px;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
     float: right;
     padding: 10px;
     border: 2px solid black;
@@ -101,7 +102,46 @@ body {
     font-family: sans-serif;
     font-size: 14px;
   }
+    /* End Home styles */
+    /* Register Styles */
+  .form {
+    width: 100%;
+  }
 
+  form {
+
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  input {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 7px 1px rgba(0,0,0,0.1);
+    margin: 5px;
+    width: 100%;
+  }
+  input:active {
+    box-shadow: 0 0 7px 1px rgba( 55, 86,177,1);
+  }
+  label {
+    font-size: 14px;
+    padding: 10px;
+    color: grey;
+  }
+  button {
+    display: block;
+    background-color: rgba( 55, 86,177,1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    border-bottom: 2px solid rgba(  9, 33,105,1);
+    width: 125px;
+    margin: 10px auto;
+  }
 }
 
 @media all and (min-device-width: 550px){
@@ -202,5 +242,44 @@ body {
     font-family: sans-serif;
     font-size: 14px;
   }
+  /* End Home styles */
+  /* Register Styles */
+  .form {
+    width: 100%;
+  }
 
+  form {
+
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  input {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 7px 1px rgba(0,0,0,0.1);
+    margin: 5px;
+    width: 100%;
+  }
+  input:active {
+    box-shadow: 0 0 7px 1px rgba( 55, 86,177,1);
+  }
+  label {
+    font-size: 14px;
+    padding: 10px;
+    color: grey;
+  }
+  button {
+    display: block;
+    background-color: rgba( 55, 86,177,1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    border-bottom: 2px solid rgba(  9, 33,105,1);
+    width: 125px;
+    margin: 10px auto;
+  }
 }
