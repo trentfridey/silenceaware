@@ -1,26 +1,41 @@
 import React from 'react';
 import '../index.css';
 
+class Profile{
+    constructor(firstName, lastName, email){
+        this.first_name = firstName
+        this.last_name = lastName
+        this.email = email
+    }
+    getData(){
+        return ({"last_name": this.last_name,
+                "first_name": this.first_name,
+                "email": this.email})
+    }
+}
+
 export default class Register extends React.Component {
     constructor(props){
         super(props);
         this.state = {};
         this.registerPost = this.registerPost.bind(this)
     }
-    
+
     registerPost(e){
         e.preventDefault();
         const data = new FormData(e.target);
-        var profile = {};
-        data.forEach((v,k)=>(profile[k] = v))
+        var profile = new Profile(data.get('first_name'), data.get('last_name'), data.get('email'))
+        const url = "https://ax65c8djp8.execute-api.us-west-2.amazonaws.com"
 
-        // fetch("https://ax65c8djp8.execute-api.us-west-2.amazonaws.com/api/register",
-        //     {
-        //         method: 'POST',
-        //         content-type: 'application/json',
-        //         body: profile
-        //     }
-        // )
+        fetch(url+"/api/register",
+            {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: new Headers({'Content-Type':'application/json'}),
+                body: profile
+            })
+        // .then((res) => (res.json())).catch((err) => (console.log('Error: ', err)))
+        // .then(resJSON => console.log('Success:', resJSON))
     }
 
     render(){
