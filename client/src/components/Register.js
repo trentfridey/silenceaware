@@ -1,19 +1,6 @@
 import React from 'react';
 import '../index.css';
 
-class Profile{
-    constructor(firstName, lastName, email){
-        this.first_name = firstName
-        this.last_name = lastName
-        this.email = email
-    }
-    getData(){
-        return ({"last_name": this.last_name,
-                "first_name": this.first_name,
-                "email": this.email})
-    }
-}
-
 export default class Register extends React.Component {
     constructor(props){
         super(props);
@@ -24,18 +11,19 @@ export default class Register extends React.Component {
     registerPost(e){
         e.preventDefault();
         const data = new FormData(e.target);
-        var profile = new Profile(data.get('first_name'), data.get('last_name'), data.get('email'))
-        const url = "https://ax65c8djp8.execute-api.us-west-2.amazonaws.com"
+        const profile = {'first_name': data.get('first_name'), 'last_name': data.get('last_name'), 'email': data.get('email')}
+        //const url = "https://ax65c8djp8.execute-api.us-west-2.amazonaws.com"
+        console.log(profile)
 
-        fetch(url+"/api/register",
+        fetch("https://ax65c8djp8.execute-api.us-west-2.amazonaws.com/api/register/",
             {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: new Headers({'Content-Type':'application/json'}),
-                body: profile
+                body: {'first_name':"test", "last_name":"tester", "email":"tes@example.com"}
             })
-        // .then((res) => (res.json())).catch((err) => (console.log('Error: ', err)))
-        // .then(resJSON => console.log('Success:', resJSON))
+         .then((res) => (res.json())).catch((err) => (console.log('Error: ', err)))
+         .then(this.props.history.push('/dashboard'))
     }
 
     render(){
