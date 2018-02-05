@@ -1,5 +1,17 @@
 import React from 'react';
 import '../index.css';
+import {Validate, ValidateGroup, ErrorMessage} from 'react-validate';
+import validator from 'validator';
+
+// Validation setup
+
+const validateEmail = (value) => {
+    return (validator.isEmail(value))
+}
+
+const errorMessages = {email: 'Please input a valid email address'}
+
+// Main Component
 
 export default class Register extends React.Component {
     constructor(props){
@@ -11,18 +23,24 @@ export default class Register extends React.Component {
     registerPost(e){
         e.preventDefault();
         const data = new FormData(e.target);
-        const profile = {'first_name': data.get('first_name'), 'last_name': data.get('last_name'), 'email': data.get('email')}
+        const profile = {first_name: data.get('first_name'), last_name: data.get('last_name'), email: data.get('email')}
         //const url = "https://ax65c8djp8.execute-api.us-west-2.amazonaws.com"
-        console.log(profile)
+        const url = "https://event-server.glitch.me"
 
-        fetch("https://ax65c8djp8.execute-api.us-west-2.amazonaws.com/api/register/",
+        fetch(`${url}/register`,
             {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: new Headers({'Content-Type':'application/json'}),
-                body: {'first_name':"test", "last_name":"tester", "email":"tes@example.com"}
+                mode: 'cors',
+                //credentials: 'include',
+                headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+                body: JSON.stringify(profile)
             })
-         .then((res) => (res.json())).catch((err) => (console.log('Error: ', err)))
+         .then((res) => {if(!res.ok){
+             throw Error(res.statusText);
+         } return res
+        })
+         .catch(err => console.log(err))
+         .then(json => console.log(json))
          .then(this.props.history.push('/dashboard'))
     }
 
@@ -33,26 +51,38 @@ export default class Register extends React.Component {
                 
                 <div className="form">
                     <form onSubmit={this.registerPost}>
+                        
+                        <ValidateGroup>
                         <label htmlFor="first_name">
-                        First Name:
+                        First Name*:
                         </label>
                         <br/>
+                        <Validate>
                         <input id="first_name" name="first_name" type="text"></input>
+                        </Validate>
                         <br/>
                         <label htmlFor="last_name">
-                        Last Name:
+                        Last Name*:
                         </label>
                         <br/>
+                        <Validate>
                         <input id="last_name" name="last_name" type="text"></input>
+                        </Validate>
                         <br/>
                         <label htmlFor="email">
-                        Email:
+                        Email*:
                         </label>
                         <br/>
+                        <Validate validators={[validateEmail]}>
                         <input id="email" name="email" type="email"></input>
+                        <ErrorMessage>{errorMessages.email}</ErrorMessage>
+                        </Validate>
                         <br/>
-                        <button>Submit</button>
+                        
+                        <button type="submit">Submit</button>
+                        </ValidateGroup>
                     </form>
+                    *Required
                 </div>
             </div>
         )

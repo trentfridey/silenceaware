@@ -7,29 +7,39 @@ export default class Dashboard extends React.Component {
     constructor(props){
         super(props)
         this.state = {};
-        this.state.events = {}
+        this.state.events = []
         this.getEvents = this.getEvents.bind(this)
     }
 
     getEvents(after, before){
-        before = before.toISOString;
-        after = after.toISOString;
-        return fetch(`https://ax65c8djp8.execute-api.us-west-2.amazonaws.com/api/events?before=${before}&after=${after}`,
+        before = before.toISOString();
+        after = after.toISOString();
+        var url = "https://event-server.glitch.me"
+        //const url = "https://ax65c8djp8.execute-api.us-west-2.amazonaws.com"
+        return fetch(`${url}/events/${after}/${before}`,
             {
                 method: 'GET',
-                mode: 'no-cors',
-                headers: new Headers({'Content-Type':'application/json'}),
+                mode: 'cors',
+                headers: {'Content-Type':'application/json'},
             }).then(res => res.json())
-            .catch(err => {throw err});
+            .catch(err => {throw err})
     }
 
     componentDidMount(){
         this.getEvents((new Date(Date.now()-1000*60*60)), (new Date()))
-        .then(data => this.setState({events: data}))
+        .then(data =>{
+            let activeEvents = data.filter((ev)=> ev.end_time === "null")
+            let pastEvents = data.filter((ev)=>ev.end_time !== "null")
+            pastEvents.sort((a,b) => (
+                (new Date(a.start_time)).getTime() - (new Date(b.start_time)).getTime()
+            ))
+            activeEvents.push(...pastEvents)
+            this.setState({events: activeEvents})
+        })
     }
 
     render(){
-        const {events} = this.state;
+        const events = this.state.events;
         return (
             <div className="container">
                 <h1>Dashboard</h1>
@@ -38,24 +48,26 @@ export default class Dashboard extends React.Component {
                         <label htmlFor="after">
                         Starting Time:
                         </label><br/>
-                        <DateTime id="after" inputProps={{placeholder: (new Date(Date.now()-1000*60*60))}}/>
+                        <DateTime id="after" inputProps={{placeholder: (new Date(Date.now()-1000*60*60)).toLocaleString()}}/>
                         <label htmlFor="before">
                         Ending Time:
                         </label><br/>
-                        <DateTime id="before" inputProps={{placeholder: new Date()}}/>
+                        <DateTime id="before" inputProps={{placeholder: (new Date()).toLocaleString()}}/>
                         <button>Submit</button>
                     </form>
                 </div>
                 <div className="event-display">
-                    {events.map((event) => (
-                        <div key={event.id} className={event.end_time === null? "event active": "event"}>
-                            <h2>Event</h2>
-                            <p className="start">{event.start_time}</p>
-                            <p className="end">{event.end_time===null? "Active Event": `End Time: ${event.end_time}`}</p>
-                            <p className="description">{event.description}</p>
-                            <p className="id">{event.id}</p>
+                    {events? events.map((event) => (
+                        <div key={event.event_id} className="event">
+                            <div className={event.end_time === "null"? "active": "event-header"}>{event.end_time === "null"? "Active Event": "Event"}</div>
+                            <div className="event-body">
+                                <p className="start">Start: {(new Date(event.start_time)).toLocaleString()}</p>
+                                <p className="end">{event.end_time==="null"? null: `End Time: ${(new Date(event.end_time)).toLocaleString()}`}</p>
+                                <p className="description">Description: {event.description}</p>
+                                <p className="id">Event ID: {event.event_id}</p>
+                            </div>
                         </div>
-                    ))}
+                    )): null}
                 </div>
             </div>
             
