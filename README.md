@@ -6,7 +6,8 @@ SilenceAware
 Usage:
 
 To run in your local directory, it's simple. Just:
-- `git clone https://github.com/trentfridey/silenceaware.git`
+- `git clone https://github.com/trentfridey/silenceaware.git <folder name>`
+- `cd <folder name>`
 - `cd client`
 - `npm install`
 - `npm start`
