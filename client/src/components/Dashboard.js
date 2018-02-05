@@ -25,6 +25,7 @@ export default class Dashboard extends React.Component {
         super(props)
         this.state = {};
         this.state.events = []
+        this.state.loading = true;
         this.getEvents = this.getEvents.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -63,7 +64,12 @@ export default class Dashboard extends React.Component {
         })
     }
 
+    componentWillMount(){
+        this.setState({loading: true})
+    }
+
     componentDidMount(){
+        this.setState({loading: false})
         this.getEvents((new Date(Date.now()-1000*60*60)), (new Date()))
         .then(data =>{
             let activeEvents = data.filter((ev)=> ev.end_time === "null")
@@ -96,6 +102,7 @@ export default class Dashboard extends React.Component {
                         {/* </ValidateGroup> */}
                     </form>
                 </div>
+                {this.state.loading? <p>Loading...</p> : null}
                 <div className="event-display">
                     {events? events.map((event) => (
                         <div key={event.event_id} className="event">
