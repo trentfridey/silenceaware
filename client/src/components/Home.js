@@ -4,7 +4,7 @@ import logo from './project_logo.svg';
 
 const Home = () => (
     <div className="container">
-        <h1> SilentAware </h1>
+        <h1> SilenceAware </h1>
         <div className="full-logo">
             <img src={logo} alt="No birds were harmed in the making of this logo" className="full-logo-img"/>
         </div>

@@ -1,6 +1,6 @@
 {
-  "short_name": "SilentAware",
-  "name": "SilentAware",
+  "short_name": "SilenceAware",
+  "name": "SilenceAware",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",

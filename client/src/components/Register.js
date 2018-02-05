@@ -78,11 +78,10 @@ export default class Register extends React.Component {
                         <ErrorMessage>{errorMessages.email}</ErrorMessage>
                         </Validate>
                         <br/>
-                        
+                        <label htmlFor="button">*required</label>
                         <button type="submit">Submit</button>
                         </ValidateGroup>
                     </form>
-                    *Required
                 </div>
             </div>
         )

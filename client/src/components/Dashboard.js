@@ -2,7 +2,7 @@ import React from 'react';
 import '../index.css';
 import DateTime from 'react-datetime';
 import './DateTime.css';
-import {Validate, ValidateGroup, ErrorMessage} from 'react-validate';
+//import {Validate, ValidateGroup, ErrorMessage} from 'react-validate';
 
 // Validation setup
 
@@ -102,7 +102,7 @@ export default class Dashboard extends React.Component {
                             <div className={event.end_time === "null"? "active": "event-header"}>{event.end_time === "null"? "Active Event": "Event"}</div>
                             <div className="event-body">
                                 <p className="start">Start: {(new Date(event.start_time)).toLocaleString()}</p>
-                                <p className="end">{event.end_time==="null"? null: `End Time: ${(new Date(event.end_time)).toLocaleString()}`}</p>
+                                <p className="end">{event.end_time==="null"? null: `End: ${(new Date(event.end_time)).toLocaleString()}`}</p>
                                 <p className="description">Description: {event.description}</p>
                                 <p className="id">Event ID: {event.event_id}</p>
                             </div>
